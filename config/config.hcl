@@ -22,9 +22,12 @@ ports {
 bootstrap_expect = 1
 
 acl = {
-	enabled = false,
-	default_policy = "allow",
-	enable_token_persistence = true
+	enabled = true,
+	default_policy = "deny",
+	down_policy = "extend-cache",
+	tokens = {
+		agent = "79ae268b-7cfe-e025-8743-9cc50e3ac481"
+	}
 }
 
 connect = {
