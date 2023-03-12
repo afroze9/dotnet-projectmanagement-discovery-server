@@ -1,4 +1,4 @@
-﻿$token = "ba7a565d-9aa6-2753-d8bb-6258403dbcae"
+﻿$token = "13585e24-52a3-e906-981a-b2246ed54d77"
 
 consul acl policy create -name="kv-company-api" -description="Policy that grants KV access to company-api" -rules @company-api-policies.hcl -token="$token"
 consul acl policy create -name="kv-project-api" -description="Policy that grants KV access to project-api" -rules @project-api-policies.hcl -token="$token"

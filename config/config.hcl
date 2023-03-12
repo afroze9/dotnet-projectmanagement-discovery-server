@@ -26,7 +26,7 @@ acl = {
   default_policy = "deny",
   down_policy    = "extend-cache",
   tokens         = {
-    agent = "79ae268b-7cfe-e025-8743-9cc50e3ac481"
+    agent = "e1385f24-46d0-4775-488f-a4117b90273b"
   }
 }
 
