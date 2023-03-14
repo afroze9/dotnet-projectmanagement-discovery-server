@@ -1,5 +1,24 @@
 {
-  "ApplicationSettings": {
+  "PersistenceSettings": {
     "ConnectionString": "User ID=developer;Password=dev123;Host=localhost;Port=5438;Database=project_management_company"
+  },
+  "SerilogSettings": {
+    "ElasticSearchSettings": {
+      "Uri": "https://localhost:9200",
+      "Username": "elastic",
+      "Password": "dev123",
+      "IndexFormat": "logs-company-api-{0:yyyy.MM}"
+    }
+  },
+  "Consul": {
+    "Token": "ddbf61cc-84aa-3d48-0703-7f2ade35d51c",
+    "Discovery": {
+      "ServiceName": "company-api",
+      "Scheme": "https",
+      "Retry": {
+        "Enabled": true,
+        "MaxAttempts": 5
+      }
+    }
   }
 }

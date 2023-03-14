@@ -8,7 +8,7 @@ ui_config {
 }
 
 leave_on_terminate = true
-data_dir           = "C:\\tools\\consul\\data"
+data_dir           = "D:\\tools\\consul\\data"
 
 client_addr    = "0.0.0.0"
 bind_addr      = "127.0.0.1"
@@ -26,7 +26,7 @@ acl = {
   default_policy = "deny",
   down_policy    = "extend-cache",
   tokens         = {
-    agent = "e1385f24-46d0-4775-488f-a4117b90273b"
+    agent = "ba7a565d-9aa6-2753-d8bb-6258403dbcae"
   }
 }
 
