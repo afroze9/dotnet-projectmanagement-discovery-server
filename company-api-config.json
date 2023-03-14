@@ -20,5 +20,10 @@
         "MaxAttempts": 5
       }
     }
+  },
+  "TelemetrySettings": {
+    "Endpoint": "http://localhost:4317",
+    "ServiceName": "company-api",
+    "ServiceVersion": "v1"
   }
 }
