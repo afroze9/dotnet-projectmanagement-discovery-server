@@ -1,6 +1,7 @@
 {
-  "PersistenceSettings": {
-    "ConnectionString": "User ID=developer;Password=dev123;Host=localhost;Port=5438;Database=project_management_company"
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "Default": "User ID=developer;Password=dev123;Host=localhost;Port=5438;Database=project_management_company"
   },
   "SerilogSettings": {
     "ElasticSearchSettings": {
@@ -8,6 +9,15 @@
       "Username": "elastic",
       "Password": "dev123",
       "IndexFormat": "logs-company-api-{0:yyyy.MM}"
+    }
+  },
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Verbose",
+      "Override": {
+        "Microsoft": "Warning",
+        "System": "Warning"
+      }
     }
   },
   "Consul": {
@@ -25,6 +35,11 @@
     "Endpoint": "http://localhost:4317",
     "ServiceName": "company-api",
     "ServiceVersion": "v1"
+  },
+  "Spring": {
+    "RabbitMq": {
+      "Addresses": "amqp://developer:dev123@localhost"
+    }
   },
   "management": {
     "endpoints": {
