@@ -8,7 +8,7 @@ ui_config {
 }
 
 leave_on_terminate = true
-data_dir           = "D:\\tools\\consul\\data"
+data_dir           = "/consul/data"
 
 client_addr    = "0.0.0.0"
 bind_addr      = "127.0.0.1"
@@ -22,7 +22,7 @@ ports {
 bootstrap_expect = 1
 
 acl = {
-  enabled        = true,
+  enabled        = false,
   default_policy = "deny",
   down_policy    = "extend-cache",
   tokens         = {
