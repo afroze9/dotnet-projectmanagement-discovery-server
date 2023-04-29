@@ -36,4 +36,3 @@ echo "Done"
 echo "Token: $token"
 
 Set-Variable -Name $tokenResult -Value $token -Scope 1
-

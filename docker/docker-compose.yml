@@ -11,6 +11,7 @@ services:
      - ./certs/:/consul/config/certs/
     networks:
       - consul
+      - econsul
     ports:
       - "8500:8500"
       - "8600:8600/tcp"
@@ -26,6 +27,7 @@ services:
      - ./certs/:/consul/config/certs/
     networks:
       - consul
+      - econsul
     command: "agent -bootstrap-expect=3"
 
   consul-server3:
@@ -37,9 +39,12 @@ services:
      - ./certs/:/consul/config/certs/
     networks:
       - consul
+      - econsul
     command: "agent -bootstrap-expect=3"
 
 networks:
   consul:
     driver: bridge
-
+  econsul:
+    external: 
+      name: consul-external
