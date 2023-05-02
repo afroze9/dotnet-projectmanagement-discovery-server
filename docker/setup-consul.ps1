@@ -1,5 +1,50 @@
 param($tokenResult)
 
+function Restart-ContainerAndWait {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$ContainerName,
+        [int]$MaxRetries = 10,
+        [int]$SleepSeconds = 5
+    )
+
+    # Restart the container
+    docker container restart $ContainerName
+
+    # Wait for the container to be up again
+    $containerIp = $null
+    $retries = 0
+    while (-not $containerIp -and $retries -lt $MaxRetries) {
+        Write-Host "Waiting for container '$ContainerName' to be up again (retry: $($retries+1))..."
+        Start-Sleep -Seconds $SleepSeconds
+        $containerIp = (docker container inspect $ContainerName --format '{{.NetworkSettings.Networks.bridge.IPAddress}}') -replace '\r',''
+        $retries++
+    }
+
+    if ($containerIp) {
+        Write-Host "Container '$ContainerName' is up"
+    } else {
+        Write-Error "Failed to start container '$ContainerName' after $MaxRetries retries."
+    }
+}
+
+function Replace-SubnetIp {
+    param(
+        [string]$FilePath,
+        [string]$NewSubnetIp
+    )
+
+    $jsonString = Get-Content $FilePath -Raw
+    $jsonObject = $jsonString | ConvertFrom-Json
+    $jsonObject.bind_addr = '{{{{ GetPrivateInterfaces | include "network" "{0}" | attr "address" }}}}' -f $NewSubnetIp
+    $jsonObject | ConvertTo-Json -Depth 5 | Set-Content $FilePath
+}
+
+# $subnetIP is provided externally
+Replace-SubnetIp -FilePath "./server1.json" -NewSubnetIp $subnetIp
+Replace-SubnetIp -FilePath "./server2.json" -NewSubnetIp $subnetIp
+Replace-SubnetIp -FilePath "./server3.json" -NewSubnetIp $subnetIp
+
 docker-compose up --detach
 
 echo "Copying ACL config to consul servers"
@@ -8,16 +53,13 @@ docker cp consul-acl.json consul-server2:/consul/config/consul-acl.json
 docker cp consul-acl.json consul-server3:/consul/config/consul-acl.json
 
 echo "Restarting consul-server2"
-docker restart consul-server2
-Start-Sleep -Seconds 5
+Restart-ContainerAndWait -ContainerName "consul-server2" -MaxRetries 10 -SleepSeconds 5 
 
 echo "Restarting consul-server3"
-docker restart consul-server3
-Start-Sleep -Seconds 5
+Restart-ContainerAndWait -ContainerName "consul-server3" -MaxRetries 10 -SleepSeconds 5
 
 echo "Restarting consul-server1"
-docker restart consul-server1
-Start-Sleep -Seconds 5
+Restart-ContainerAndWait -ContainerName "consul-server1" -MaxRetries 10 -SleepSeconds 5
 
 echo "Bootstrapping ACL"
 $output = docker exec consul-server1 consul acl bootstrap
