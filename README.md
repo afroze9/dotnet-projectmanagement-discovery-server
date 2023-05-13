@@ -1,4 +1,5 @@
 # Deploy on K8s
+helm repo update
 helm install consul hashicorp/consul --create-namespace --namespace consul --values values.yaml
 
 # Get Token
